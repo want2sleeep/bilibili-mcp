@@ -1,0 +1,35 @@
+{
+  "name": "bilibili-mcp",
+  "version": "1.0.0",
+  "author": "SleepSheep",
+  "license": "MIT",
+  "description": "A simple bilibili mcp server",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "bilibili": "./build/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "bilibili",
+    "bilibili-mcp",
+    "bilibili-mcp-server",
+    "bilibili-search"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.13.0",
+    "bilibili-api-ts": "^11.11.2",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "typescript": "^5.8.3"
+  }
+}
