@@ -1,25 +1,48 @@
-import { AlertFeature, ForecastPeriod } from "../types/weather.js";
+import { Video } from "../types/index.js";
 
-export function formatAlert(feature: AlertFeature): string {
-  const props = feature.properties;
-  return [
-    `Event: ${props.event || "Unknown"}`,
-    `Area: ${props.areaDesc || "Unknown"}`,
-    `Severity: ${props.severity || "Unknown"}`,
-    `Status: ${props.status || "Unknown"}`,
-    `Headline: ${props.headline || "No headline"}`,
-    "---",
-  ].join("\n");
+/**
+ * 格式化Bilibili视频搜索结果
+ * @param {Array} videos - 视频搜索结果数组
+ * @returns {string} - 格式化后的结果字符串
+ */
+export function formatVideos(videos: Video[]) {
+  return videos
+    .map((video, index) => {
+      return [
+        `${index + 1}. "${video.title}" - ${video.author}`,
+        ` BVID: ${video.bvid}`,
+        ` Views: ${video.play?.toLocaleString()}`,
+        ` Danmaku: ${video.danmaku?.toLocaleString()}`,
+        ` Likes: ${video.like?.toLocaleString()}`,
+        ` Duration: ${video.duration}`,
+        ` Published: ${formatTimestamp(video.pubdate)}`,
+        ` Description: ${video.description?.substring(0, 100)}${
+          video.description?.length > 100 ? "..." : ""
+        }`,
+      ].join("\n");
+    })
+    .join("\n\n");
 }
 
-export function formatForecastPeriod(period: ForecastPeriod): string {
-  return [
-    `${period.name || "Unknown"}:`,
-    `Temperature: ${period.temperature || "Unknown"}°${
-      period.temperatureUnit || "F"
-    }`,
-    `Wind: ${period.windSpeed || "Unknown"} ${period.windDirection || ""}`,
-    `${period.shortForecast || "No forecast available"}`,
-    "---",
-  ].join("\n");
+/**
+ * 格式化时间戳为可读日期
+ * @param {number} timestamp - Unix时间戳
+ * @returns {string} - 格式化后的日期字符串
+ */
+export function formatTimestamp(timestamp: number): string {
+  if (!timestamp) return "未知时间";
+
+  try {
+    const date = new Date(timestamp * 1000);
+    return date.toLocaleDateString("zh-CN", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } catch (error) {
+    console.error("格式化时间戳出错:", error);
+    return "时间格式错误";
+  }
 }
